@@ -1,0 +1,397 @@
+/*
+    Remove all the styles of the "User-Agent-Stylesheet", except for the 'display' property
+    - The "symbol *" part is to solve Firefox SVG sprite bug
+ */
+*:where(
+    :not(html, iframe, canvas, img, svg, video, audio):not(svg *, symbol *)
+  ) {
+  all: unset;
+  display: revert;
+}
+
+/* Preferred box-sizing value */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Reapply the pointer cursor for anchor tags */
+a,
+button {
+  cursor: revert;
+}
+
+/* Remove list styles (bullets/numbers) */
+ol,
+ul,
+menu {
+  list-style: none;
+}
+
+/* For images to not be able to exceed their container */
+img {
+  max-inline-size: 100%;
+  max-block-size: 100%;
+}
+
+/* removes spacing between cells in tables */
+table {
+  border-collapse: collapse;
+}
+
+/* Safari - solving issue when using user-select:none on the <body> text input doesn't working */
+input,
+textarea {
+  -webkit-user-select: auto;
+}
+
+/* revert the 'white-space' property for textarea elements on Safari */
+textarea {
+  white-space: revert;
+}
+
+/* minimum style to allow to style meter element */
+meter {
+  -webkit-appearance: revert;
+  appearance: revert;
+}
+
+/* preformatted text - use only for this feature */
+:where(pre) {
+  all: revert;
+}
+
+/* reset default text opacity of input placeholder */
+::placeholder {
+  color: unset;
+}
+
+/* remove default dot (•) sign */
+::marker {
+  content: initial;
+}
+
+/* fix the feature of 'hidden' attribute.
+   display:revert; revert to element instead of attribute */
+:where([hidden]) {
+  display: none;
+}
+
+/* revert for bug in Chromium browsers
+   - fix for the content editable attribute will work properly.
+   - webkit-user-select: auto; added for Safari in case of using user-select:none on wrapper element*/
+:where([contenteditable]:not([contenteditable="false"])) {
+  -moz-user-modify: read-write;
+  -webkit-user-modify: read-write;
+  overflow-wrap: break-word;
+  -webkit-line-break: after-white-space;
+  -webkit-user-select: auto;
+}
+
+/* apply back the draggable feature - exist only in Chromium and Safari */
+:where([draggable="true"]) {
+  -webkit-user-drag: element;
+}
+
+/* Revert Modal native behavior */
+:where(dialog:modal) {
+  all: revert;
+}
+
+/* Custom root properties*/
+:root {
+  /* Base font */
+  font-family: "Poppins";
+  font-size: 16px;
+
+  /* Primary colors */
+  --purple: hsl(259, 100%, 65%);
+  --light-red: hsl(0, 100%, 67%);
+
+  /* Neutral colors */
+  --white: hsl(0, 0%, 100%);
+  --off-white: hsl(0, 0%, 94%);
+  --light-grey: hsl(0, 0%, 86%);
+  --smokey-grey: hsl(0, 1%, 44%);
+  --off-black: hsl(0, 0%, 8%);
+
+  /* Wrapper border-radus properties */
+  --wrapper-small-radius: 1rem;
+  --wrapper-big-radius: 10rem;
+
+  /* Font styling */
+  --input-font-size: 2rem;
+  --input-font-weight: 700;
+
+  --input-error-font-weight: 400;
+  --input-error-font-style: italic;
+
+  --result-font-size: 5rem;
+  --result-font-weight: 800;
+  --result-font-style: italic;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: 100dvw;
+  height: 100dvh;
+
+  background-color: var(--off-white);
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+
+  width: 70%;
+  height: 70%;
+
+  background-color: var(--white);
+
+  /* Border-radius syntax: "border-radius: LT RT RB LB" */
+  border-radius: var(--wrapper-small-radius) var(--wrapper-small-radius)
+    var(--wrapper-big-radius) var(--wrapper-small-radius);
+
+  padding: 5%;
+}
+
+.date-picker {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+
+  width: 100%;
+
+  gap: 5%;
+
+  border-bottom: 0.1rem solid var(--light-grey);
+
+  padding-bottom: 3rem;
+  padding-right: 30%;
+
+  position: relative;
+}
+
+.date-picker button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: 100px;
+  height: 100px;
+
+  position: absolute;
+  bottom: -50px;
+  right: 0;
+
+  background-color: var(--purple);
+
+  border-radius: 50px;
+
+  cursor: pointer;
+
+  transition: background-color 0.25s ease-in-out;
+}
+
+.input-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+
+  width: 100%;
+
+  gap: 0.5rem;
+
+  position: relative;
+}
+
+.input-wrapper label {
+  text-transform: uppercase;
+  color: var(--smokey-grey);
+}
+
+.input-wrapper input {
+  border: 0.1rem solid var(--light-grey);
+  border-radius: 0.5rem;
+
+  width: 100%;
+  resize: vertical;
+
+  padding: 1rem;
+
+  font-size: var(--input-font-size);
+  color: var(--smokey-grey);
+  font-weight: var(--input-font-weight);
+
+  -moz-appearance: textfield;
+
+  transition: border-color 0.25s ease-in-out;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+.age-result {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  width: 100%;
+  height: min-content;
+}
+
+.result-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+
+  width: 100%;
+
+  font-size: var(--result-font-size);
+  font-style: var(--result-font-style);
+  font-weight: var(--result-font-weight);
+}
+
+.result {
+  color: var(--purple);
+}
+
+.attribution {
+  font-size: 0.7rem;
+  text-align: center;
+
+  position: absolute;
+  bottom: 20px;
+}
+.attribution a {
+  text-decoration: underline;
+  color: hsl(228, 45%, 44%);
+}
+
+.empty::after {
+  position: absolute;
+  bottom: -2rem;
+  content: attr(data-empty);
+  font-weight: var(--input-error-font-weight);
+  font-style: var(--input-error-font-style);
+  color: var(--light-red);
+}
+
+.invalid::after {
+  position: absolute;
+  bottom: -2rem;
+  content: attr(data-invalid);
+  font-weight: var(--input-error-font-weight);
+  font-style: var(--input-error-font-style);
+  color: var(--light-red);
+}
+
+.future::after {
+  position: absolute;
+  bottom: -2rem;
+  content: attr(data-future);
+  font-weight: var(--input-error-font-weight);
+  font-style: var(--input-error-font-style);
+  color: var(--light-red);
+}
+
+.invalid_date::after {
+  position: absolute;
+  bottom: 1rem;
+  content: attr(data-invalidDate);
+  font-weight: var(--input-error-font-weight);
+  font-style: var(--input-error-font-style);
+  color: var(--light-red);
+}
+
+.record::after {
+  position: absolute;
+  bottom: 1rem;
+  content: attr(data-record);
+  font-weight: var(--input-error-font-weight);
+  font-style: var(--input-error-font-style);
+  color: var(--light-red);
+}
+
+.born::after {
+  position: absolute;
+  bottom: 1rem;
+  content: attr(data-born);
+  font-weight: var(--input-error-font-weight);
+  font-style: var(--input-error-font-style);
+  color: var(--light-red);
+}
+
+@media (any-pointer: fine) {
+  .input-wrapper input:hover {
+    cursor: pointer;
+    border-color: var(--purple);
+  }
+
+  .date-picker button:hover {
+    background-color: var(--off-black);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  :root {
+    font-size: 10px;
+  }
+
+  .wrapper {
+    width: 90%;
+    justify-content: space-between;
+  }
+
+  .date-picker {
+    padding-right: 0;
+    padding-bottom: 30%;
+  }
+
+  .date-picker button {
+    right: 50%;
+    left: 35%;
+  }
+
+  .result-wrapper {
+    height: 100%;
+  }
+
+  .empty::after {
+    position: absolute;
+    bottom: -3.5rem;
+  }
+
+  .invalid::after {
+    width: 100%;
+    bottom: -3.5rem;
+  }
+
+  .future::after {
+    bottom: -3.5rem;
+  }
+
+  .invalid_date::after {
+    bottom: 8rem;
+  }
+
+  .record::after {
+    bottom: 8rem;
+  }
+
+  .born::after {
+    bottom: 10rem;
+  }
+}
