@@ -334,6 +334,10 @@ input::-webkit-inner-spin-button {
   color: var(--light-red);
 }
 
+.input-wrapper input:focus {
+  border-color: var(--purple);
+}
+
 @media (any-pointer: fine) {
   .input-wrapper input:hover {
     cursor: pointer;

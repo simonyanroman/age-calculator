@@ -230,6 +230,16 @@ function isDateValid(year, month, day) {
       "data-invalidDate",
       `No such day in ${monthArr[birthMonth]} of ${birthYear}`
     );
+
+    dayPicker.style.border = "0.1rem solid var(--light-red)";
+    dayPickerLabel.style.color = "var(--light-red)";
+
+    monthPicker.style.border = "0.1rem solid var(--light-red)";
+    monthPickerLabel.style.color = "var(--light-red)";
+
+    yearPicker.style.border = "0.1rem solid var(--light-red)";
+    yearPickerLabel.style.color = "var(--light-red)";
+
     datePicker.classList.add("invalid_date");
   }
 }
